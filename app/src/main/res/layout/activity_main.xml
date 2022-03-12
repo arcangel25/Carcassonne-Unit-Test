@@ -9,14 +9,14 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/runButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="Button" />
+        android:text="Run Unit Test" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/testText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
