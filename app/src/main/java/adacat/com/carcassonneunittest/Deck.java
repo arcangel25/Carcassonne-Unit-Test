@@ -30,7 +30,7 @@ public class Deck {
      * @return The tile drawn from the deck.
      */
     public Tile drawTile() {
-        return this.tiles.remove((int)(Math.random() * this.tiles.size()));
+        return this.tiles.remove(0);
     }
 
     /**

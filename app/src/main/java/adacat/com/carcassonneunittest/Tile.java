@@ -1,6 +1,6 @@
 package adacat.com.carcassonneunittest;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Represents a single Carcassonne tile. Carcassonne's main complexity lies in
@@ -101,7 +101,7 @@ import java.util.HashSet;
  * this does not have to be accounted for. Secondly, hasCloister states whether
  * the tile is a cloister or not.
  *
- * Tiles are used in HashSets; however, equals() and hashCode() are deliberately
+ * Tiles are used in TreeSets; however, equals() and hashCode() are deliberately
  * not implemented. This is because identical tiles are distinct: there can be two
  * tile D's with the same rotation and meeples on the same map, but they are
  * distinct for every purpose. Care must therefore be taken to not mix Tiles and
@@ -123,18 +123,18 @@ public class Tile {
      * The parts of the tile that comprise each section of each farm in this tile. See
      * the main comment for Tile for more information.
      */
-    private HashSet<Integer>[] farmSections;
+    private TreeSet<Integer>[] farmSections;
     /**
      * The parts of the tile that comprise each section of each city in this tile. See
      * the main comment for Tile for more information.
      */
-    private HashSet<Integer>[] citySections;
+    private TreeSet<Integer>[] citySections;
 
     /**
      * The road parts that indicate which edge of the tile has a road in that direction.
      * See the main comment for Tile for more information.
      */
-    private HashSet<Integer> roads;
+    private TreeSet<Integer> roads;
 
     /**
      * Indicates whether the city on this tile has a pennant or not. Always false for
@@ -332,13 +332,13 @@ public class Tile {
      * @param part The part number to get the section for.
      * @return The entire set of parts in the part's section.
      */
-    public HashSet<Integer> getSectionFromPart(int part) {
-        HashSet<Integer> section = getGenericSectionFromPart(this.farmSections, part);
+    public TreeSet<Integer> getSectionFromPart(int part) {
+        TreeSet<Integer> section = getGenericSectionFromPart(this.farmSections, part);
         if (section == null) {
             // We didn't find a farm, so find the city section that must then exist.
             section = getGenericSectionFromPart(this.citySections, part);
         }
-        return new HashSet<>(section);
+        return new TreeSet<>(section);
     }
 
     /**
@@ -346,8 +346,8 @@ public class Tile {
      *
      * @return The set of all roads.
      */
-    public HashSet<Integer> getRoads() {
-        return new HashSet<>(this.roads);
+    public TreeSet<Integer> getRoads() {
+        return new TreeSet<>(this.roads);
     }
 
     /**
@@ -386,12 +386,12 @@ public class Tile {
      *
      * @return The set of parts in the meeple's section, or null if not applicable.
      */
-    public HashSet<Integer> getMeepleSection() {
+    public TreeSet<Integer> getMeepleSection() {
         if (this.meepleType == TYPE_CITY) {
-            return new HashSet<>(this.citySections[this.meepleSection]);
+            return new TreeSet<>(this.citySections[this.meepleSection]);
         }
         else if (this.meepleType == TYPE_FARM) {
-            return new HashSet<>(this.farmSections[this.meepleSection]);
+            return new TreeSet<>(this.farmSections[this.meepleSection]);
         }
         return null;
     }
@@ -499,7 +499,7 @@ public class Tile {
         this.farmSections = copySections(other.farmSections);
         this.citySections = copySections(other.citySections);
 
-        this.roads = new HashSet<>(other.roads);
+        this.roads = new TreeSet<>(other.roads);
 
         this.hasPennant = other.hasPennant;
         this.hasCloister = other.hasCloister;
@@ -514,8 +514,8 @@ public class Tile {
      * @param part     The part number found in one of the sections.
      * @return The set of part in the section if found, or null otherwise.
      */
-    private static HashSet<Integer> getGenericSectionFromPart(
-            HashSet<Integer>[] sections, int part) {
+    private static TreeSet<Integer> getGenericSectionFromPart(
+            TreeSet<Integer>[] sections, int part) {
         for (int i = 0; i < sections.length; i++) {
             if (sections[i].contains(part)) {
                 return sections[i];
@@ -529,7 +529,7 @@ public class Tile {
      *
      * @param sections The sections to rotate.
      */
-    private static void rotateSections(HashSet<Integer>[] sections) {
+    private static void rotateSections(TreeSet<Integer>[] sections) {
         for (int i = 0; i < sections.length; i++) {
             sections[i] = rotateSet(sections[i], 2, 8);
         }
@@ -547,10 +547,10 @@ public class Tile {
      * @param mod The total number of parts.
      * @return The rotated set.
      */
-    private static HashSet<Integer> rotateSet(HashSet<Integer> set, int add, int mod) {
+    private static TreeSet<Integer> rotateSet(TreeSet<Integer> set, int add, int mod) {
         // We have to create a new set and return it because we can't change set
         // elements in place: they aren't positional.
-        HashSet<Integer> rotated = new HashSet<>();
+        TreeSet<Integer> rotated = new TreeSet<>();
         for (int part : set) {
             rotated.add((part + add) % mod);
         }
@@ -558,13 +558,13 @@ public class Tile {
     }
 
     /**
-     * Creates a HashSet of integers out of an array of integers.
+     * Creates a TreeSet of integers out of an array of integers.
      *
      * @param array The array of integers to create the set from.
      * @return The set created from the array.
      */
-    private static HashSet<Integer> setFromIntArray(int[] array) {
-        HashSet<Integer> set = new HashSet<>();
+    private static TreeSet<Integer> setFromIntArray(int[] array) {
+        TreeSet<Integer> set = new TreeSet<>();
         for (int i = 0; i < array.length; i++) {
             set.add(array[i]);
         }
@@ -572,13 +572,13 @@ public class Tile {
     }
 
     /**
-     * Creates an array of HashSets of integers out of a double array of integers.
+     * Creates an array of TreeSets of integers out of a double array of integers.
      *
      * @param array The double array of integers to create the array of sets from.
      * @return The array of sets created from the double array.
      */
-    private static HashSet<Integer>[] sectionsFromIntArray(int[][] array) {
-        HashSet<Integer>[] sections = new HashSet[array.length];
+    private static TreeSet<Integer>[] sectionsFromIntArray(int[][] array) {
+        TreeSet<Integer>[] sections = new TreeSet[array.length];
         for (int i = 0; i < array.length; i++) {
             sections[i] = setFromIntArray(array[i]);
         }
@@ -586,15 +586,15 @@ public class Tile {
     }
 
     /**
-     * Makes a deep copy of an array of HashSets of integers.
+     * Makes a deep copy of an array of TreeSets of integers.
      *
      * @param sections The array of sets to make a deep copy of.
      * @return The deep copy of the array of sets.
      */
-    private static HashSet<Integer>[] copySections(HashSet<Integer>[] sections) {
-        HashSet<Integer>[] copy = new HashSet[sections.length];
+    private static TreeSet<Integer>[] copySections(TreeSet<Integer>[] sections) {
+        TreeSet<Integer>[] copy = new TreeSet[sections.length];
         for (int i = 0; i < sections.length; i++) {
-            copy[i] = new HashSet<>(sections[i]);
+            copy[i] = new TreeSet<>(sections[i]);
         }
         return copy;
     }
@@ -605,7 +605,7 @@ public class Tile {
      * @param array The set to convert to a string.
      * @return The string representation of the set.
      */
-    public static String setToString(HashSet<Integer> array) {
+    public static String setToString(TreeSet<Integer> array) {
         String str = "{";
 
         for (int part : array) {
@@ -622,7 +622,7 @@ public class Tile {
      * @param array The array of sets to convert to a string.
      * @return The string representation of the array of sets.
      */
-    public static String sectionsToString(HashSet<Integer>[] array) {
+    public static String sectionsToString(TreeSet<Integer>[] array) {
         String str = "{\n";
 
         for (int i = 0; i < array.length; i++) {

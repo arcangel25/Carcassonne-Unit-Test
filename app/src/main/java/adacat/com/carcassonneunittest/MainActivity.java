@@ -1,5 +1,12 @@
 package adacat.com.carcassonneunittest;
 
+/**
+ *
+ * Sets up UI for Unit Test app
+ * @author DJ Backus, Alex Martinez-Lopez, Cheyanne Yim, Vincent Robinson, Sophie Arcangel
+ * @version 3.14.22
+ */
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;

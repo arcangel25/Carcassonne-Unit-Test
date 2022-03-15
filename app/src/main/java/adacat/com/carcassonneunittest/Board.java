@@ -1,6 +1,6 @@
 package adacat.com.carcassonneunittest;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Represents the "board" of tiles, i.e. all the tiles in play, including the special
@@ -251,7 +251,7 @@ public class Board {
             // If there's only one road meeple anywhere along this road, it must be
             // the one on this tile.
             return 1 == countRoadMeeples(this.currentTileX, this.currentTileY,
-                    new HashSet<>());
+                    new TreeSet<>());
         }
 
         // This must be a farm or city meeple: check all parts of the section it's in
@@ -259,7 +259,7 @@ public class Board {
 
         // Make one shared visited set across all calls to ensure everything is counted
         // exactly once.
-        HashSet<HashSet<Integer>> visited = new HashSet<>();
+        TreeSet<TreeSet<Integer>> visited = new TreeSet<>();
 
         int total = 0;
         for (int part : this.currentTile.getMeepleSection()) {
@@ -334,7 +334,7 @@ public class Board {
             }
         }
 
-        this.currentTile = (this.currentTile == null) ? null :
+        this.currentTile = (other.currentTile == null) ? null :
                 new Tile(other.currentTile);
         this.currentTileX = other.currentTileX;
         this.currentTileY = other.currentTileY;
@@ -423,7 +423,7 @@ public class Board {
      *                an infinite recursion loop.
      * @return The number of meeples anywhere on the road.
      */
-    private int countRoadMeeples(int x, int y, HashSet<Tile> visited) {
+    private int countRoadMeeples(int x, int y, TreeSet<Tile> visited) {
         Tile tile = getTile(x, y);
 
         // Ignore non-existent tiles and don't count tiles we've already searched
@@ -466,14 +466,14 @@ public class Board {
      *         it.
      */
     private int countSectionMeeples(int type, int x, int y, int part,
-                                    HashSet<HashSet<Integer>> visited) {
+                                    TreeSet<TreeSet<Integer>> visited) {
         Tile tile = getTile(x, y);
         if (tile == null) {
             // Ignore non-existent tiles
             return 0;
         }
 
-        HashSet<Integer> section = tile.getSectionFromPart(part);
+        TreeSet<Integer> section = tile.getSectionFromPart(part);
 
         // Don't count tiles we've already searched through so that we don't run
         // into infinite recursion.

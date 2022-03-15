@@ -1,5 +1,13 @@
 package adacat.com.carcassonneunittest;
 
+/**
+ *
+ * The ButtonHandler executes the unit test upon the user's click of the button.
+ * @author DJ Backus, Alex Martinez-Lopez, Cheyanne Yim, Vincent Robinson, Sophie Arcangel
+ * @version 3.14.22
+ *
+ */
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,9 +23,11 @@ public class ButtonHandler implements View.OnClickListener{
     public void onClick(View view) {
         this.textBox.clearComposingText();
 
+        //Creating instances
         CarcassonneGameState firstInstance = new CarcassonneGameState(4);
         CarcassonneGameState firstCopy = new CarcassonneGameState(firstInstance);
 
+        //Calls all actions
         firstInstance.placeTile(1, 2, 1);
         this.textBox.append("Player 1 placed the tile at (2, 1)\n");
 
@@ -49,11 +59,16 @@ public class ButtonHandler implements View.OnClickListener{
         this.textBox.append("Player 2 confirmed meeple placement\n");
 
         firstInstance.quitGame(3);
-        this.textBox.append("Player 3 quit the game.");
+        this.textBox.append("Player 3 quit the game.\n");
 
         CarcassonneGameState secondInstance = new CarcassonneGameState(4);
         CarcassonneGameState secondCopy = new CarcassonneGameState(secondInstance);
 
+        //Verify the copies are the same
+        this.textBox.append("\n Is first copy equal to second copy?\n");
+        this.textBox.append(" " + secondInstance.toString().equals(secondCopy.toString()));
+
+        //Print all information to screen
         this.textBox.append("firstCopy: " + firstCopy.toString());
         this.textBox.append("secondCopy: " + secondCopy.toString());
     }
